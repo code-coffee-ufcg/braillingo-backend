@@ -105,4 +105,11 @@ class image_generator():
         encoded_image = self.reshape_encoded_image(flatten_image)
         caractere = self.make_caractere(encoded_image, radius, pad_width)
 
-        return caractere
+        for i in range(0,caractere.shape[0]):
+            for j in range(0, caractere.shape[1]):
+                if caractere[i][j] == 1:
+                    caractere[i][j] = 0
+                else:
+                    caractere[i][j] = 1
+
+        return caractere 
