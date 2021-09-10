@@ -88,8 +88,8 @@ class image_generator():
         
 
         return encoded_image
-
-    def caractere_generator(self, flatten_image, radius=4, pad_width=3):
+    
+    def caractere_generator(self,flatten_image, radius=4, pad_width=3):
         '''
         Gera um caractere em braille a partir de um array codificado.
 
@@ -105,11 +105,5 @@ class image_generator():
         encoded_image = self.reshape_encoded_image(flatten_image)
         caractere = self.make_caractere(encoded_image, radius, pad_width)
 
-        for i in range(0,caractere.shape[0]):
-            for j in range(0, caractere.shape[1]):
-                if caractere[i][j] == 1:
-                    caractere[i][j] = 0
-                else:
-                    caractere[i][j] = 1
 
-        return caractere 
+        return caractere
