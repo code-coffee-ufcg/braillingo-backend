@@ -8,14 +8,7 @@ class image_generator():
 
     def element_generator(self, radius=4, state=True):
         ''''
-        Gera um furo (elemento) do caractere em braille.
-        
-        Entrada:
-        radius -> tamanho do raio do furo
-        state -> tipo de dado booleano que indica o estado do furo
-
-        Saída:
-        element -> array do elemento do caractere
+        Gera um furo (elemento) do caractere em braille
         '''
 
         element = sk.disk(radius)
@@ -32,14 +25,7 @@ class image_generator():
 
     def zero_padding(self, image, width=1):
         '''
-        Adiciona zeros na borda de um array.
-
-        Entrada:
-        image -> array da imagem.
-        widht -> largura da borda em pixels.
-
-        Saída:
-        image -> imagem com as bordas adicionadas.
+        Adiciona zeros na borda de um array
         '''
 
         image = np.pad(image, pad_width=width, mode='constant')
@@ -48,15 +34,7 @@ class image_generator():
 
     def make_caractere(self, encoded_image, radius=4, pad_width=1):
         '''
-        Gera uma imagem do caractere em braille.
-
-        Entrada:
-        encoded_image -> array booleano indicando os pontos de furo.
-        radius -> raio do furo.
-        pad_width -> largura da borda de zeros em pixels.
-
-        Saída:
-        caractere -> array com a imagem do caractere em braille
+        Gera uma imagem do caractere em braille
         '''
         
         caractere = [[np.concatenate((self.element_generator(radius, encoded_image[0][0]), 
@@ -64,7 +42,7 @@ class image_generator():
                     [np.concatenate((self.element_generator(radius, encoded_image[1][0]), 
                                      self.element_generator(radius, encoded_image[1][1])), axis=1)],
                     [np.concatenate((self.element_generator(radius, encoded_image[2][0]), 
-                                     self.element_generator(radius, encoded_image[2][0])), axis=1)]]
+                                     self.element_generator(radius, encoded_image[2][1])), axis=1)]]
 
         caractere = np.concatenate((np.squeeze(caractere[0]),np.squeeze(caractere[1]), np.squeeze(caractere[2])))
 
@@ -74,36 +52,20 @@ class image_generator():
 
     def reshape_encoded_image(self, flatten):
         '''
-        Cria uma array com o formato do gabarito de furos em braille.
-        
-        Entrada:
-        flatten -> lista com a codificação dos furos.
-
-        Saída:
-        encoded_image -> imagem codificada no formato correto do gabarito.
+        Cria uma array com o formato do gabarito de furos em braille
         '''
 
         encoded_image = np.array(flatten, dtype='uint8')
         encoded_image = encoded_image.reshape(3,2)
-        
 
         return encoded_image
     
     def caractere_generator(self,flatten_image, radius=4, pad_width=3):
         '''
-        Gera um caractere em braille a partir de um array codificado.
-
-        Entrada:
-        flatten_image -> lista codificada como one hot encoder do caractere em braille.
-        radius -> raio do furo presente no gabarito.
-        pad_width -> largura da borda de zeros presentes no caractere.
-
-        Saída:
-        caractere -> array com a imagem do caractere em braille.
+        Gera um caractere em braille a partir de um array codificado
         '''
 
         encoded_image = self.reshape_encoded_image(flatten_image)
         caractere = self.make_caractere(encoded_image, radius, pad_width)
-
 
         return caractere
