@@ -249,26 +249,41 @@ def optical_braille_recognition(img):
     '''
     Recebe uma imagem pré-processada contendo um texto em braille, detecta a
     posição desses caracters na imagem e apartir disso obtem uma matriz de
-    subimagens contendo os caracteres braille
+    subimagens contendo uma palavra do texto em cada linha
 
     Entrada:
     img --> Array da imagem pré-processada
 
     Saída:
-    subimages --> matriz de subimagens contendo os caracteres braille
+    subimages --> matriz de subimagens, onde cada linha possui os caracteres de
+                  uma palavra
     '''
 
     hist_y = make_histogram_y(img)
     delimiters_y = get_delimiters(hist_y)
     line_delimiters = get_line_delimiters(delimiters_y)
     line_subimages = get_line_subimages(img, line_delimiters)
-
+    
     subimages = list()
     for i in range(len(line_subimages)):
         hist_x = make_histogram_x(line_subimages[i])
         delimiters_x = get_delimiters(hist_x)
         char_delimiters = get_character_delimiters(delimiters_x)
         char_subimages = get_character_subimages(line_subimages[i], char_delimiters)
-        subimages.append(char_subimages)
+        
+        word_subimages = list()
+        for j in range(len(char_subimages)):
+            hist_x = make_histogram_x(char_subimages[j])
+            
+            if np.max(hist_x) != 0:
+                word_subimages.append(char_subimages[j])
+            else:
+                subimages.append(word_subimages)
+                word_subimages = list()
+                
+            if np.max(hist_x) != 0 and j == len(char_subimages)-1:
+                subimages.append(word_subimages)
+                word_subimages = list()
+                
 
     return subimages
