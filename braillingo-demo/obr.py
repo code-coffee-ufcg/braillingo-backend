@@ -1,7 +1,5 @@
 import cv2
-import matplotlib.pyplot as plt
 import numpy as np
-import skimage.morphology
 import statistics as stat
 
 class optical_braille_recognition():
@@ -283,3 +281,21 @@ class optical_braille_recognition():
                     
 
         return subimages
+
+    def tilt_correction(self, img):
+
+        max = 0
+        rows, cols = img.shape
+
+        for theta in np.arange(-6, 6, 0.1):
+            Mr = cv2.getRotationMatrix2D( (cols/2, rows/2),  theta , 1)
+            aux_img = cv2.warpAffine(img, Mr, (cols, rows))
+
+            hist_y = self.make_histogram_y(aux_img)
+            delimiters_y = self.get_delimiters(hist_y)
+
+            if len(delimiters_y) > max:
+                max = len(delimiters_y)
+                dst_img = aux_img
+        
+        return dst_img
