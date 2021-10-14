@@ -115,7 +115,7 @@ class caractere_generator():
 
         return flatten_list
 
-    def dict_codification(self, dataframe_path = 'braille-pt-br.csv', usecols = ['Codificacao', 'Rotulo']):
+    def dict_codification(self, dataframe_path = '../csv_data/braille-pt-br.csv', usecols = ['Codificacao', 'Rotulo']):
         '''
         cria um dicionário com a codificação do alfabeto em braille
 
