@@ -1,7 +1,7 @@
 import numpy as np
 import skimage.morphology as sk
 
-class image_generator():
+class caractere_gen_v_1_0():
 
     def __init__(self) -> None:
         pass
